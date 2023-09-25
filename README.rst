@@ -16,7 +16,9 @@ Assuming you already have : bash, git, python, ipython, matplotlib
   * https://docs.conda.io/en/latest/
 
 
-1. clone **mandelbrot** and **np** repos::
+1. clone **mandelbrot** and **np** repos
+
+::
 
    cd   
    git clone https://github.com/simoncblyth/mandelbrot
@@ -24,7 +26,9 @@ Assuming you already have : bash, git, python, ipython, matplotlib
 
 2. read the code downloaded 
 
-3. build and run::
+3. build and run
+
+::
 
    cd ~/mandelbrot
    ./mandelbrot.sh 
