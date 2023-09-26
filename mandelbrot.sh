@@ -18,8 +18,16 @@ export FOLD=/tmp/$name
 mkdir -p $FOLD
 bin=$FOLD/$name
 
+np_base=..
+NP_BASE=${NP_BASE:-$np_base}
+
+vars="NP_BASE name FOLD"
+
+if [ "${arg/info}" != "$arg" ]; then
+   for var in $vars ; do printf "%20s : %s \n" "$var" "${!var}" ; done 
+fi 
 if [ "${arg/build}" != "$arg" ]; then 
-    gcc $name.cc -I$HOME/np -std=c++11 -lstdc++ -o $bin 
+    gcc $name.cc -I$NP_BASE/np -std=c++11 -lstdc++ -lm -o $bin 
     [ $? -ne 0 ] && echo $BASH_SOURCE build error && exit 1 
 fi 
 if [ "${arg/run}" != "$arg" ]; then 
