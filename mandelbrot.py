@@ -4,9 +4,18 @@ mandelbrot.py
 ==============
 
 """
-import numpy as np
+import os, numpy as np
 SIZE = np.array([1280, 720])
 import matplotlib.pyplot as plt
+
+def IsRemoteSession():
+    """ 
+    Heuristic to detect remote SSH session 
+    """
+    has_SSH_CLIENT = not os.environ.get("SSH_CLIENT", None) is None 
+    has_SSH_TTY = not os.environ.get("SSH_TTY", None) is None 
+    return has_SSH_CLIENT or has_SSH_TTY
+
 
 def read_npy(path, d):
     path = os.path.expandvars(path)
@@ -39,5 +48,15 @@ if __name__ == '__main__':
     fig, ax = plt.subplots(figsize=SIZE/100.)  
     fig.suptitle(label % d)
     ax.imshow(a, extent=d["extent"], cmap=cmap) 
-    fig.show()
+
+    if IsRemoteSession():
+        outpath = os.environ.get("OUTPATH", "mandelbrot.png")
+        print("IsRemoteSession detected saving to OUTPATH outpath %s " % outpath)
+        plt.savefig(outpath)
+    else:
+        print("NOT:IsRemoteSession try to pop up a window")
+        fig.show()
+    pass
+
+
 
