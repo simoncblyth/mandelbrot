@@ -4,7 +4,8 @@ defarg="info_all"
 arg=${1:-$defarg}
 
 src=/Users/blyth/mandelbrot/         ## for rsync a trailing slash on source directory means copy contents of this directory
-dst=L7:bes3/mandelbrot
+#dst=L7:bes3/mandelbrot
+dst=L7:g/mandelbrot
 cmd="rsync -zarv --delete  $src $dst"
 
 vars="BASH_SOURCE defarg arg src dst cmd"
