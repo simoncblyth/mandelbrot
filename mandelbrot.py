@@ -12,6 +12,11 @@ def IsRemoteSession():
     """ 
     Heuristic to detect remote SSH session 
     """
+    has_REMOTE = not os.environ.get("REMOTE", None) is None
+    has_LOCAL = not os.environ.get("LOCAL", None) is None
+    if has_REMOTE: return True 
+    if has_LOCAL: return False 
+
     has_SSH_CLIENT = not os.environ.get("SSH_CLIENT", None) is None 
     has_SSH_TTY = not os.environ.get("SSH_TTY", None) is None 
     return has_SSH_CLIENT or has_SSH_TTY
@@ -50,8 +55,8 @@ if __name__ == '__main__':
     ax.imshow(a, extent=d["extent"], cmap=cmap) 
 
     if IsRemoteSession():
-        outpath = os.environ.get("OUTPATH", "mandelbrot.png")
-        print("IsRemoteSession detected saving to OUTPATH outpath %s " % outpath)
+        outpath = os.path.expandvars("$FOLD/mandelbrot.png")
+        print("IsRemoteSession detected saving to outpath %s " % outpath)
         plt.savefig(outpath)
     else:
         print("NOT:IsRemoteSession try to pop up a window")
