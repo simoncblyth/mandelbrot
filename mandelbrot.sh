@@ -11,10 +11,12 @@ EOU
 }
 cd $(dirname $BASH_SOURCE)
 name=mandelbrot 
-defarg="build_run_ana"
+defarg="info_build_run_ana_ls"
 arg=${1:-$defarg}
 
-export FOLD=/tmp/$USER/$name
+#fold=/tmp/$USER/$name
+fold=$HOME/g/tmp/$USER/$name
+export FOLD=${FOLD:-$fold}
 mkdir -p $FOLD
 bin=$FOLD/$name
 
@@ -37,18 +39,21 @@ fi
 if [ "${arg/grab}" != "$arg" ]; then 
     rsync -zarv --progress --include="*/"  \
           --include="*.npy" \
+          --include="*.txt" \
           --include="*.jpg" \
           --include="*.png" \
           "L7:$FOLD/" "$FOLD"
 
     [ $? -ne 0 ] && echo $BASH_SOURCE grab error && exit 3
 fi 
-
-
-
-
 if [ "${arg/ana}" != "$arg" ]; then 
     ${IPYTHON:-ipython} --pdb -i $name.py 
-    [ $? -ne 0 ] && echo $BASH_SOURCE ana error && exit 1 
+    [ $? -ne 0 ] && echo $BASH_SOURCE ana error && exit 4 
 fi 
+if [ "${arg/ls}" != "$arg" ]; then 
+    echo FOLD $FOLD
+    ls -l $FOLD
+    [ $? -ne 0 ] && echo $BASH_SOURCE ls error && exit 5
+fi 
+
 exit 0 

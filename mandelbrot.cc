@@ -105,7 +105,9 @@ std::string Mandelbrot::desc() const                            //S
 int main()
 {
     Mandelbrot m ; 
-    m.a->save("$FOLD/a.npy"); 
+    const char* path = "$FOLD/a.npy" ; 
+    std::cout << "saving Mandelbrot array to " << path << std::endl ; 
+    m.a->save(path); 
     std::cout << m.desc() << std::endl ; 
     return 0 ; 
 }
