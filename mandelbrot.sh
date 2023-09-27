@@ -14,7 +14,7 @@ name=mandelbrot
 defarg="build_run_ana"
 arg=${1:-$defarg}
 
-export FOLD=/tmp/$name
+export FOLD=/tmp/$USER/$name
 mkdir -p $FOLD
 bin=$FOLD/$name
 
@@ -34,6 +34,19 @@ if [ "${arg/run}" != "$arg" ]; then
     $bin
     [ $? -ne 0 ] && echo $BASH_SOURCE run error && exit 2 
 fi 
+if [ "${arg/grab}" != "$arg" ]; then 
+    rsync -zarv --progress --include="*/"  \
+          --include="*.npy" \
+          --include="*.jpg" \
+          --include="*.png" \
+          "L7:$FOLD/" "$FOLD"
+
+    [ $? -ne 0 ] && echo $BASH_SOURCE grab error && exit 3
+fi 
+
+
+
+
 if [ "${arg/ana}" != "$arg" ]; then 
     ${IPYTHON:-ipython} --pdb -i $name.py 
     [ $? -ne 0 ] && echo $BASH_SOURCE ana error && exit 1 
