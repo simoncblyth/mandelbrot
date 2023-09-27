@@ -59,7 +59,7 @@ if [ "${arg/ana}" != "$arg" ]; then
 fi 
 if [ "${arg/ls}" != "$arg" ]; then 
     echo FOLD $FOLD
-    ls -l $FOLD
+    find $FOLD -type f 
     [ $? -ne 0 ] && echo $BASH_SOURCE ls error && exit 5
 fi 
 
