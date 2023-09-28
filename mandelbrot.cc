@@ -23,6 +23,7 @@ the configured region.                                 //S
 #include <complex>
 #include <array>
 #include <vector>
+#include <cstdlib>
 #include "NP.hh"
 
 struct Mandelbrot
@@ -66,6 +67,9 @@ inline Mandelbrot::Mandelbrot()
     a->set_meta<double>("xmax", X[1] ) ;   //S 
     a->set_meta<double>("ymin", Y[0] ) ;   //S
     a->set_meta<double>("ymax", Y[1] ) ;   //S
+
+    const char* label = getenv("LABEL"); 
+    if(label) a->set_meta<std::string>("LABEL",label) ; 
 
     for(int iy=0 ; iy<NY ;iy++) for(int ix=0 ; ix<NX ;ix++) 
     {

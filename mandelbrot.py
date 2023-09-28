@@ -24,6 +24,7 @@ def IsRemoteSession():
 
 def read_npy(path, d):
     path = os.path.expandvars(path)
+    print("read_npy: loading array from path %s " % path )
     a = np.load(path)
     if not d is None:
         txtpath = path.replace(".npy","_meta.txt")

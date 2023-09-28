@@ -7,40 +7,41 @@ FOCUS=-1.45,0,0.05 ~/mandelbrot/mandelbrot.sh
 FOCUS=-1.45,0,0.05 MIT=80 ~/mandelbrot/mandelbrot.sh
 FOCUS=-1.45,0,0.05 MIT=50 ~/mandelbrot/mandelbrot.sh
 
+Initially used awkward FOLD and running from HOME directory 
+as workarounds for /tmp apparently not being visible to rsync on lxslc7
 
-Awkward FOLD and running from HOME directory 
-are workarounds for /tmp not being visible 
-to rsync on lxslc7
+But a better solution is to pin down connection to specific
+node eg lxslc708 which then allows to rsync from absolute tmp 
+path which can be the same on both the remote and the laptop. 
 
 EOU
 }
 
-SDIR=$(cd $(dirname $BASH_SOURCE) && pwd)
-cd 
+cd $(dirname $BASH_SOURCE)
 
 name=mandelbrot 
 defarg="info_build_run_ana_ls"
 arg=${1:-$defarg}
 
-#fold=g/tmp/$USER/$name
 fold=/tmp/$USER/$name
 export FOLD=$fold
+export LABEL="$BASH_SOURCE $(uname -n) $(date)"
 mkdir -p $FOLD
 bin=$FOLD/$name
 
 remote=L708
 REMOTE=${REMOTE:-$remote}
 
-np_base=$SDIR/..
+np_base=..
 NP_BASE=${NP_BASE:-$np_base}
 
-vars="REMOTE NP_BASE name SDIR FOLD"
+vars="REMOTE LABEL NP_BASE name SDIR FOLD"
 
 if [ "${arg/info}" != "$arg" ]; then
    for var in $vars ; do printf "%20s : %s \n" "$var" "${!var}" ; done 
 fi 
 if [ "${arg/build}" != "$arg" ]; then 
-    gcc $SDIR/$name.cc -I$NP_BASE/np -std=c++11 -lstdc++ -lm -o $bin 
+    gcc $name.cc -I$NP_BASE/np -std=c++11 -lstdc++ -lm -o $bin 
     [ $? -ne 0 ] && echo $BASH_SOURCE build error && exit 1 
 fi 
 if [ "${arg/run}" != "$arg" ]; then 
@@ -58,7 +59,7 @@ if [ "${arg/grab}" != "$arg" ]; then
     [ $? -ne 0 ] && echo $BASH_SOURCE grab error && exit 3
 fi 
 if [ "${arg/ana}" != "$arg" ]; then 
-    ${IPYTHON:-ipython} --pdb -i $SDIR/$name.py 
+    ${IPYTHON:-ipython} --pdb -i $name.py 
     [ $? -ne 0 ] && echo $BASH_SOURCE ana error && exit 4 
 fi 
 if [ "${arg/ls}" != "$arg" ]; then 
