@@ -22,15 +22,19 @@ name=mandelbrot
 defarg="info_build_run_ana_ls"
 arg=${1:-$defarg}
 
-fold=g/tmp/$USER/$name
+#fold=g/tmp/$USER/$name
+fold=/tmp/$USER/$name
 export FOLD=$fold
 mkdir -p $FOLD
 bin=$FOLD/$name
 
+remote=L708
+REMOTE=${REMOTE:-$remote}
+
 np_base=$SDIR/..
 NP_BASE=${NP_BASE:-$np_base}
 
-vars="NP_BASE name SDIR FOLD"
+vars="REMOTE NP_BASE name SDIR FOLD"
 
 if [ "${arg/info}" != "$arg" ]; then
    for var in $vars ; do printf "%20s : %s \n" "$var" "${!var}" ; done 
@@ -49,7 +53,7 @@ if [ "${arg/grab}" != "$arg" ]; then
           --include="*.txt" \
           --include="*.jpg" \
           --include="*.png" \
-          "L7:$FOLD/" "$FOLD"
+          "$REMOTE:$FOLD/" "$FOLD"
 
     [ $? -ne 0 ] && echo $BASH_SOURCE grab error && exit 3
 fi 
