@@ -30,7 +30,9 @@ def read_npy(path, d):
         txtpath = path.replace(".npy","_meta.txt")
         lines = open(txtpath).read().splitlines()
         for line in lines:
-            key, val = line.split(":")
+            div = line.find(":") 
+            if div == -1: continue
+            key, val = line[:div],line[div+1:]
             d[key] = val
         pass 
     pass
@@ -49,6 +51,7 @@ if __name__ == '__main__':
 
     label = "mandelbrot.sh : CMAP %(CMAP)s FOCUS %(FOCUS)s MZZ %(MZZ)s" 
     label += " MIT %(MIT)s extent %(extent)s ami %(ami)d amx %(amx)d "
+    if "IDENTITY" in d: label += "\n %(IDENTITY)s "  
     print(label % d)
 
     fig, ax = plt.subplots(figsize=SIZE/100.)  

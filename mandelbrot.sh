@@ -25,7 +25,7 @@ arg=${1:-$defarg}
 
 fold=/tmp/$USER/$name
 export FOLD=$fold
-export LABEL="$BASH_SOURCE $(uname -n) $(date)"
+export IDENTITY="$BASH_SOURCE $(uname -n) $(date)"
 mkdir -p $FOLD
 bin=$FOLD/$name
 
@@ -35,7 +35,7 @@ REMOTE=${REMOTE:-$remote}
 np_base=..
 NP_BASE=${NP_BASE:-$np_base}
 
-vars="REMOTE LABEL NP_BASE name SDIR FOLD"
+vars="REMOTE IDENTITY NP_BASE name SDIR FOLD"
 
 if [ "${arg/info}" != "$arg" ]; then
    for var in $vars ; do printf "%20s : %s \n" "$var" "${!var}" ; done 
